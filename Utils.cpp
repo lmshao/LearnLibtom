@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int Byte2Hex(const uint8_t *in, int len, char **out) {
+int Byte2Hex(const uint8_t *in, uint32_t len, char **out) {
     if (in == NULL || len <= 0 || out == NULL){
         printf("Byte2Hex param err.\n");
         return 1;
@@ -105,7 +105,7 @@ int Base64Encrypt(const uint8_t *plain, uint32_t plainLen, char **base64) {
 
     pos = buff;
 
-    for (int i = 0; i < plainLen/3; ++i) {
+    for (int i = 0; i < (int)plainLen/3; ++i) {
 
         n = (plain[3*i] >> 2) & 0x3F;
         *pos++ = Base64Table[n];
@@ -208,4 +208,16 @@ int Base64Decrypt(const char *base64, uint8_t **plain, uint32_t *plainLen) {
     *plainLen = (int) strlen((const char *) buff);
 
     return 0;
+}
+
+char *toHex(const uint8_t *in, uint32_t len) {
+    char *res = NULL;
+    Byte2Hex(in, len, &res);
+    return res;
+}
+
+char *toBase64(const uint8_t *plain, uint32_t plainLen) {
+    char *res = NULL;
+    Base64Encrypt(plain, plainLen, &res);
+    return res;
 }

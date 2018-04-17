@@ -1,5 +1,5 @@
-CC = gcc  
-LD = gcc
+CC = cc
+LD = cc
 SRCS = $(wildcard *.cpp)
 OBJS = $(patsubst %.cpp, %.o, $(SRCS))
 

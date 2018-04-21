@@ -30,6 +30,10 @@ int AES_CBC(const uint8_t *key, uint32_t keyLen, const uint8_t *iv, uint32_t ivL
             const uint8_t *inData, uint32_t inLen, uint8_t **outData, uint32_t *outLen,
             CryptoOperation cryptoType, PaddingType paddingType);
 
+int AES_CTR(const uint8_t *key, uint32_t keyLen, const uint8_t *iv, uint32_t ivLen,
+            const uint8_t *inData, uint32_t inLen, uint8_t **outData, uint32_t *outLen,
+            CryptoOperation cryptoType);
+
 int AES_Padding(PaddingType type, const uint8_t *in, uint32_t inLen, uint8_t **out, uint32_t *outLen);
 
 int AES_UnPadding(PaddingType type, const uint8_t *in, uint32_t inLen, uint8_t **out, uint32_t *outLen);

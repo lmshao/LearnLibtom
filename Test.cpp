@@ -13,6 +13,8 @@ int AES_Test() {
 
     AES_CBC_Test();
 
+    AES_CTR_Test();
+
     return 0;
 }
 
@@ -57,6 +59,27 @@ int AES_CBC_Test() {
     printf("AES CBC cipher data HEX:\t%s\n", toHex(ct, cl));
     printf("AES CBC cipher data Base64:\t%s\n", toBase64(ct, cl));
     printf("AES CBC plain after dec:\t%s\n", (char*)ot);
+
+    return 0;
+}
+
+int AES_CTR_Test() {
+
+    printf("\nAES_CTR_Test\n");
+    unsigned char key[]="1234567890123456";
+    unsigned char iv[]="abcdefghijklmnop";
+
+    const char *pt = "Hello";
+    uint8_t *ct = NULL, *ot = NULL;
+    uint32_t cl = 0, ol = 0;
+
+    AES_CTR(key, sizeof(key)-1, iv, sizeof(iv)-1,(uint8_t*)pt,(uint32_t)strlen(pt), &ct, &cl, ENCRYPTION);
+    AES_CTR(key, sizeof(key)-1, iv, sizeof(iv)-1, ct, cl, &ot, &ol, DECRYPTION);
+
+    printf("AES CTR plain before enc:\t%s\n", (char*)pt);
+    printf("AES CTR cipher data HEX:\t%s\n", toHex(ct, cl));
+    printf("AES CTR cipher data Base64:\t%s\n", toBase64(ct, cl));
+    printf("AES CTR plain after dec:\t%s\n", (char*)ot);
 
     return 0;
 }

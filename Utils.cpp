@@ -205,7 +205,7 @@ int Base64Decrypt(const char *base64, uint8_t **plain, uint32_t *plainLen) {
     *pos = '\0';
 
     *plain = buff;
-    *plainLen = (int) strlen((const char *) buff);
+    *plainLen = (uint32_t)buffLen;
 
     return 0;
 }

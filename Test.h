@@ -14,4 +14,6 @@ int AES_ECB_Test();
 
 int AES_CBC_Test();
 
+int AES_CTR_Test();
+
 #endif //LIBTOM_DEMO_TEST_H

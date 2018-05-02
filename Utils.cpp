@@ -96,7 +96,8 @@ int Base64Encrypt(const uint8_t *plain, uint32_t plainLen, char **base64) {
         return -1;
     }
 
-    buffLen = (plainLen/3)*4 + ((plainLen%3)?4:0);
+//    buffLen = (plainLen/3)*4 + ((plainLen%3)?4:0);
+    buffLen = 4 * ((plainLen + 2) / 3);
     buff = (char*)malloc(buffLen* sizeof(uint8_t)+1);
     if(buff == NULL){
         printf("malloc error.\n");
@@ -106,27 +107,17 @@ int Base64Encrypt(const uint8_t *plain, uint32_t plainLen, char **base64) {
     pos = buff;
 
     for (int i = 0; i < (int)plainLen/3; ++i) {
-
-        n = (plain[3*i] >> 2) & 0x3F;
-        *pos++ = Base64Table[n];
-
-        n = ((plain[3*i] << 4) & 0x30) | ((plain[3*i+1] >> 4) & 0x0F);
-        *pos++ = Base64Table[n];
-
-        n = ((plain[3*i+1]  << 2) & 0x3C) | ((plain[3*i+2] >> 6) & 0x03);
-        *pos++ = Base64Table[n];
-
-        n = plain[3*i+2] & 0x3F;
-        *pos++ = Base64Table[n];
+        *pos++ = Base64Table[(plain[3*i] >> 2) & 0x3F];
+        *pos++ = Base64Table[((plain[3*i] << 4) & 0x30) | ((plain[3*i+1] >> 4) & 0x0F)];
+        *pos++ = Base64Table[((plain[3*i+1]  << 2) & 0x3C) | ((plain[3*i+2] >> 6) & 0x03)];
+        *pos++ = Base64Table[plain[3*i+2] & 0x3F];
     }
 
     if(plainLen%3 != 0){
-        n = (plain[(plainLen/3)*3] >> 2) & 0x3F;
-        *pos++ = (uint8_t) Base64Table[n];
+        *pos++ = (uint8_t) Base64Table[(plain[(plainLen/3)*3] >> 2) & 0x3F];
 
         if(plainLen%3 == 1){
-            n = (plain[(plainLen/3)*3] << 4) & 0x30;
-            *pos++ = (uint8_t) Base64Table[n];
+            *pos++ = (uint8_t) Base64Table[(plain[(plainLen/3)*3] << 4) & 0x30];
             *pos++ = '=';
             *pos++ = '=';
         } else{
